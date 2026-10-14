@@ -761,6 +761,28 @@
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             el.classList.add('active');
         }
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyQuCQ_DgDKqz_Og64yuzeeUu5awmS-D_CCIkEOtN3Q9pgxBc3kcgj2zBDO3S4XZdvTbg/exec';
+const registerForm = document.querySelector('form'); 
+if (registerForm) {
+  registerForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const formData = new FormData(registerForm);
+    const data = Object.fromEntries(formData.entries());
+
+    fetch(scriptURL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+    .then(() => {
+      alert('Registration Successful!');
+      registerForm.reset();
+    })
+    .catch(error => console.error('Error!', error.message));
+  });
+          }
+        
     </script>
 </body>
 </html>
