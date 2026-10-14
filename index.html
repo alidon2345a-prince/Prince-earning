@@ -48,6 +48,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            cursor: pointer;
         }
 
         .crown-icon {
@@ -82,7 +83,7 @@
             background: #0b132b;
             border: 1px solid var(--border-color);
             color: var(--accent-gold-light);
-            padding: 4px 8px;
+            padding: 6px 10px;
             border-radius: 8px;
             font-size: 12px;
             font-weight: 700;
@@ -100,6 +101,7 @@
             justify-content: center;
             font-weight: 700;
             color: var(--text-main);
+            cursor: pointer;
         }
 
         /* Container */
@@ -117,7 +119,6 @@
             padding: 20px;
             margin-bottom: 20px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-            position: relative;
         }
 
         .balance-label {
@@ -143,11 +144,6 @@
             padding-top: 12px;
         }
 
-        .stat-item {
-            display: flex;
-            flex-direction: column;
-        }
-
         .stat-title {
             font-size: 11px;
             color: var(--text-muted);
@@ -157,6 +153,7 @@
             font-size: 14px;
             font-weight: 700;
             color: var(--text-main);
+            display: block;
         }
 
         /* Tabs */
@@ -257,7 +254,7 @@
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             z-index: 200;
             align-items: center;
             justify-content: center;
@@ -309,7 +306,46 @@
             border-radius: 10px;
             font-weight: 800;
             cursor: pointer;
+            margin-top: 10px;
         }
+
+        .auth-switch {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 14px;
+        }
+
+        .auth-switch span {
+            color: var(--accent-gold-light);
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* Social Share Buttons */
+        .share-btns {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .btn-share {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-whatsapp { background: #25D366; }
+        .btn-facebook { background: #1877F2; }
 
         /* Bottom Nav */
         .bottom-nav {
@@ -345,13 +381,13 @@
 
     <!-- Header -->
     <div class="header">
-        <div class="brand">
+        <div class="brand" onclick="reloadDashboard()">
             <div class="crown-icon"><i class="fa-solid fa-crown"></i></div>
             <div class="brand-name">PRINCE EARN</div>
         </div>
         <div class="user-status">
             <button class="currency-toggle" onclick="toggleCurrency()" id="curr-btn">PKR (Rs)</button>
-            <div class="avatar">P</div>
+            <div class="avatar" id="header-avatar" onclick="handleProfileClick()">?</div>
         </div>
     </div>
 
@@ -426,12 +462,55 @@
 
     </div>
 
+    <!-- Auth Modal (Login / Sign Up) -->
+    <div class="modal" id="auth-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="auth-title">Account Login</h3>
+            </div>
+            
+            <div id="login-form">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="login-email" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="login-pass" placeholder="Enter password">
+                </div>
+                <button class="btn-submit" onclick="loginUser()">Sign In</button>
+                <div class="auth-switch">
+                    Don't have an account? <span onclick="toggleAuth('signup')">Sign Up Free</span>
+                </div>
+            </div>
+
+            <div id="signup-form" style="display: none;">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="signup-name" placeholder="Enter full name">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="signup-email" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="signup-pass" placeholder="Create password">
+                </div>
+                <button class="btn-submit" onclick="registerUser()">Create Account</button>
+                <div class="auth-switch">
+                    Already have an account? <span onclick="toggleAuth('login')">Sign In</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Withdrawal Modal -->
     <div class="modal" id="withdraw-modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Withdraw Earnings</h3>
-                <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="closeModal()"></i>
+                <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="closeModal('withdraw-modal')"></i>
             </div>
             <div class="form-group">
                 <label>Select Payment Method</label>
@@ -462,17 +541,58 @@
         </div>
     </div>
 
+    <!-- Profile Modal -->
+    <div class="modal" id="profile-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>User Profile</h3>
+                <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="closeModal('profile-modal')"></i>
+            </div>
+            <div style="text-align: center; margin-bottom: 16px;">
+                <div class="avatar" id="modal-avatar" style="width: 60px; height: 60px; margin: 0 auto 10px; font-size: 24px;">P</div>
+                <h4 style="color: var(--accent-gold-light);" id="profile-user-name">Prince User</h4>
+                <p style="font-size: 12px; color: var(--text-muted);" id="profile-user-email">user@princeearn.com</p>
+            </div>
+            <div class="form-group">
+                <label>Member Status</label>
+                <input type="text" value="Active (Free Member)" readonly>
+            </div>
+            <button class="btn-submit" style="background: #ef4444; color: #fff;" onclick="logoutUser()">Logout</button>
+        </div>
+    </div>
+
+    <!-- Refer Modal -->
+    <div class="modal" id="refer-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Invite & Earn 10%</h3>
+                <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="closeModal('refer-modal')"></i>
+            </div>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Share your unique referral link with friends and earn 10% of their task earnings forever!</p>
+            <div class="form-group">
+                <label>Your Referral Link</label>
+                <input type="text" id="ref-link" value="https://alidon2345a-prince.github.io/Prince-earning/?ref=12345" readonly>
+            </div>
+            <button class="btn-submit" onclick="copyReferralLink()"><i class="fa-solid fa-copy"></i> Copy Link</button>
+            
+            <div class="share-btns">
+                <button class="btn-share btn-whatsapp" onclick="shareWhatsApp()"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
+                <button class="btn-share btn-facebook" onclick="shareFacebook()"><i class="fa-brands fa-facebook"></i> Facebook</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Bottom Nav -->
     <div class="bottom-nav">
-        <div class="nav-link active">
+        <div class="nav-link active" onclick="reloadDashboard()">
             <i class="fa-solid fa-house"></i>
             <span>Home</span>
         </div>
-        <div class="nav-link" onclick="openModal()">
+        <div class="nav-link" onclick="openModal('withdraw-modal')">
             <i class="fa-solid fa-wallet"></i>
             <span>Withdraw</span>
         </div>
-        <div class="nav-link" onclick="alert('Referral Link Copied! Share with friends to earn 10% commission.')">
+        <div class="nav-link" onclick="openModal('refer-modal')">
             <i class="fa-solid fa-users"></i>
             <span>Refer</span>
         </div>
@@ -482,8 +602,98 @@
         let totalBalance = 0.00;
         let tasksCompleted = 0;
         let isUSD = false;
+        let currentUser = null;
+
+        // Initialize User Session
+        window.onload = function() {
+            let savedUser = localStorage.getItem("prince_user");
+            if(savedUser) {
+                currentUser = JSON.parse(savedUser);
+                updateUserUI();
+            } else {
+                openModal("auth-modal");
+            }
+        };
+
+        function toggleAuth(mode) {
+            if(mode === 'signup') {
+                document.getElementById("auth-title").innerText = "Create Free Account";
+                document.getElementById("login-form").style.display = "none";
+                document.getElementById("signup-form").style.display = "block";
+            } else {
+                document.getElementById("auth-title").innerText = "Account Login";
+                document.getElementById("signup-form").style.display = "none";
+                document.getElementById("login-form").style.display = "block";
+            }
+        }
+
+        function registerUser() {
+            let name = document.getElementById("signup-name").value.trim();
+            let email = document.getElementById("signup-email").value.trim();
+            let pass = document.getElementById("signup-pass").value.trim();
+
+            if(!name || !email || !pass) {
+                alert("Please fill in all fields!");
+                return;
+            }
+
+            currentUser = { name: name, email: email };
+            localStorage.setItem("prince_user", JSON.stringify(currentUser));
+            updateUserUI();
+            closeModal("auth-modal");
+            alert("Account Created Successfully! Welcome to Prince Earn.");
+        }
+
+        function loginUser() {
+            let email = document.getElementById("login-email").value.trim();
+            let pass = document.getElementById("login-pass").value.trim();
+
+            if(!email || !pass) {
+                alert("Please enter both email and password!");
+                return;
+            }
+
+            let namePart = email.split('@')[0];
+            currentUser = { name: namePart.charAt(0).toUpperCase() + namePart.slice(1), email: email };
+            localStorage.setItem("prince_user", JSON.stringify(currentUser));
+            updateUserUI();
+            closeModal("auth-modal");
+            alert("Logged in successfully!");
+        }
+
+        function updateUserUI() {
+            if(currentUser) {
+                let firstChar = currentUser.name.charAt(0).toUpperCase();
+                document.getElementById("header-avatar").innerText = firstChar;
+                document.getElementById("modal-avatar").innerText = firstChar;
+                document.getElementById("profile-user-name").innerText = currentUser.name;
+                document.getElementById("profile-user-email").innerText = currentUser.email;
+            }
+        }
+
+        function handleProfileClick() {
+            if(!currentUser) {
+                openModal("auth-modal");
+            } else {
+                openModal("profile-modal");
+            }
+        }
+
+        function logoutUser() {
+            localStorage.removeItem("prince_user");
+            currentUser = null;
+            document.getElementById("header-avatar").innerText = "?";
+            closeModal("profile-modal");
+            openModal("auth-modal");
+        }
 
         function completeTask(btn, reward) {
+            if(!currentUser) {
+                alert("Please Login / Sign Up first to complete tasks!");
+                openModal("auth-modal");
+                return;
+            }
+
             totalBalance += reward;
             tasksCompleted++;
             
@@ -509,17 +719,42 @@
             updateDashboard();
         }
 
-        function openModal() {
-            document.getElementById("withdraw-modal").style.display = "flex";
+        function reloadDashboard() {
+            window.location.reload();
         }
 
-        function closeModal() {
-            document.getElementById("withdraw-modal").style.display = "none";
+        function openModal(id) {
+            document.getElementById(id).style.display = "flex";
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = "none";
         }
 
         function submitWithdrawal() {
+            if(!currentUser) {
+                alert("Please Login first!");
+                openModal("auth-modal");
+                return;
+            }
             alert("Withdrawal Request Submitted Successfully! Admin will approve within 24 hours.");
-            closeModal();
+            closeModal('withdraw-modal');
+        }
+
+        function copyReferralLink() {
+            let copyText = document.getElementById("ref-link");
+            navigator.clipboard.writeText(copyText.value);
+            alert("Referral link copied to clipboard!");
+        }
+
+        function shareWhatsApp() {
+            let link = encodeURIComponent(document.getElementById("ref-link").value);
+            window.open(`https://api.whatsapp.com/send?text=Join%20Prince%20Earn%20and%20start%20earning%20today!%20${link}`);
+        }
+
+        function shareFacebook() {
+            let link = encodeURIComponent(document.getElementById("ref-link").value);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${link}`);
         }
 
         function switchTab(el) {
