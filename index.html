@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prince Earn - Global Micro-Task Platform</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b132b;
+            --card-bg: #1c2541;
+            --accent-gold: #f59e0b;
+            --accent-gold-light: #fbbf24;
+            --primary-blue: #3a86ff;
+            --green-success: #10b981;
+            --text-main: #ffffff;
+            --text-muted: #8d99ae;
+            --border-color: #2b3a67;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding-bottom: 90px;
+        }
+
+        /* Royal Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .crown-icon {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #fff;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+
+        .brand-name {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            background: linear-gradient(to right, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .currency-toggle {
+            background: #0b132b;
+            border: 1px solid var(--border-color);
+            color: var(--accent-gold-light);
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #2b3a67;
+            border: 2px solid var(--accent-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* Container */
+        .container {
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Royal Dashboard Card */
+        .royal-card {
+            background: linear-gradient(135deg, #1c2541, #3a86ff22);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+
+        .balance-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .balance-amount {
+            font-size: 30px;
+            font-weight: 800;
+            color: var(--accent-gold-light);
+            margin-bottom: 16px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 12px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-title {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .stat-val {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            margin-bottom: 16px;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .tab.active {
+            background: var(--accent-gold);
+            color: #000;
+            border-color: var(--accent-gold);
+        }
+
+        /* Task List */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .task-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .task-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .task-icon {
+            width: 42px;
+            height: 42px;
+            background: rgba(58, 134, 255, 0.15);
+            color: var(--primary-blue);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .task-details h4 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .task-details p {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .reward-tag {
+            color: var(--accent-gold-light);
+            font-weight: 700;
+        }
+
+        .btn-claim {
+            padding: 8px 14px;
+            background: var(--primary-blue);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .btn-claim.done {
+            background: var(--green-success);
+        }
+
+        /* Modal / Popups */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            background: #0b132b;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: #fff;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent-gold);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .nav-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .nav-link.active {
+            color: var(--accent-gold);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="brand">
+            <div class="crown-icon"><i class="fa-solid fa-crown"></i></div>
+            <div class="brand-name">PRINCE EARN</div>
+        </div>
+        <div class="user-status">
+            <button class="currency-toggle" onclick="toggleCurrency()" id="curr-btn">PKR (Rs)</button>
+            <div class="avatar">P</div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        
+        <!-- Balance Dashboard -->
+        <div class="royal-card">
+            <div class="balance-label">Total Balance</div>
+            <div class="balance-amount" id="user-balance">Rs. 0.00</div>
+            
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-title">Completed Tasks</span>
+                    <span class="stat-val" id="tasks-count">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-title">Referral Earnings</span>
+                    <span class="stat-val" id="ref-earn">Rs. 0.00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task Tabs -->
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab(this)">All Tasks</div>
+            <div class="tab" onclick="switchTab(this)">Short Ads (5s)</div>
+            <div class="tab" onclick="switchTab(this)">Video Watch (1m)</div>
+            <div class="tab" onclick="switchTab(this)">CPA & Apps</div>
+        </div>
+
+        <!-- Task List -->
+        <div class="task-list">
+            
+            <!-- Task 1: Short Ad -->
+            <div class="task-card">
+                <div class="task-left">
+                    <div class="task-icon"><i class="fa-solid fa-bolt"></i></div>
+                    <div class="task-details">
+                        <h4>Quick View #01</h4>
+                        <p>5 Seconds · <span class="reward-tag">+Rs. 0.50</span></p>
+                    </div>
+                </div>
+                <button class="btn-claim" onclick="completeTask(this, 0.50)">Start</button>
+            </div>
+
+            <!-- Task 2: 1 Min Video -->
+            <div class="task-card">
+                <div class="task-left">
+                    <div class="task-icon" style="color:#ef4444; background:rgba(239,68,68,0.15);"><i class="fa-brands fa-youtube"></i></div>
+                    <div class="task-details">
+                        <h4>Full Video Watch</h4>
+                        <p>60 Seconds · <span class="reward-tag">+Rs. 3.00</span></p>
+                    </div>
+                </div>
+                <button class="btn-claim" onclick="completeTask(this, 3.00)">Watch</button>
+            </div>
+
+            <!-- Task 3: CPA App Download -->
+            <div class="task-card">
+                <div class="task-left">
+                    <div class="task-icon" style="color:#10b981; background:rgba(16,185,129,0.15);"><i class="fa-solid fa-download"></i></div>
+                    <div class="task-details">
+                        <h4>Install App & Signup</h4>
+                        <p>CPA Offer · <span class="reward-tag">+Rs. 50.00</span></p>
+                    </div>
+                </div>
+                <button class="btn-claim" onclick="completeTask(this, 50.00)">Install</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Withdrawal Modal -->
+    <div class="modal" id="withdraw-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Withdraw Earnings</h3>
+                <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="closeModal()"></i>
+            </div>
+            <div class="form-group">
+                <label>Select Payment Method</label>
+                <select id="pay-method">
+                    <optgroup label="Pakistan Methods">
+                        <option value="EasyPaisa">EasyPaisa</option>
+                        <option value="JazzCash">JazzCash</option>
+                        <option value="NayaPay">NayaPay</option>
+                        <option value="SadaPay">SadaPay</option>
+                        <option value="Bank">Bank Transfer</option>
+                    </optgroup>
+                    <optgroup label="International Methods">
+                        <option value="Binance">Binance (USDT - Crypto)</option>
+                        <option value="Payoneer">Payoneer</option>
+                        <option value="PayPal">PayPal</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Account Number / Wallet Address</label>
+                <input type="text" placeholder="e.g. 03001234567 or USDT Address">
+            </div>
+            <div class="form-group">
+                <label>Amount</label>
+                <input type="number" placeholder="Min. Rs. 100 / $1.00">
+            </div>
+            <button class="btn-submit" onclick="submitWithdrawal()">Submit Request</button>
+        </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div class="bottom-nav">
+        <div class="nav-link active">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+        </div>
+        <div class="nav-link" onclick="openModal()">
+            <i class="fa-solid fa-wallet"></i>
+            <span>Withdraw</span>
+        </div>
+        <div class="nav-link" onclick="alert('Referral Link Copied! Share with friends to earn 10% commission.')">
+            <i class="fa-solid fa-users"></i>
+            <span>Refer</span>
+        </div>
+    </div>
+
+    <script>
+        let totalBalance = 0.00;
+        let tasksCompleted = 0;
+        let isUSD = false;
+
+        function completeTask(btn, reward) {
+            totalBalance += reward;
+            tasksCompleted++;
+            
+            btn.innerText = "Completed";
+            btn.classList.add("done");
+            btn.disabled = true;
+
+            updateDashboard();
+        }
+
+        function updateDashboard() {
+            document.getElementById("tasks-count").innerText = tasksCompleted;
+            if(isUSD) {
+                document.getElementById("user-balance").innerText = "$" + (totalBalance / 280).toFixed(2);
+            } else {
+                document.getElementById("user-balance").innerText = "Rs. " + totalBalance.toFixed(2);
+            }
+        }
+
+        function toggleCurrency() {
+            isUSD = !isUSD;
+            document.getElementById("curr-btn").innerText = isUSD ? "USD ($)" : "PKR (Rs)";
+            updateDashboard();
+        }
+
+        function openModal() {
+            document.getElementById("withdraw-modal").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("withdraw-modal").style.display = "none";
+        }
+
+        function submitWithdrawal() {
+            alert("Withdrawal Request Submitted Successfully! Admin will approve within 24 hours.");
+            closeModal();
+        }
+
+        function switchTab(el) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+        }
+    </script>
+</body>
+</html>
