@@ -3,386 +3,375 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prince Earn - Global Micro-Task Platform</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>Prince Earn - Online Earning Platform</title>
     <style>
-        :root {
-            --bg-color: #0b132b;
-            --card-bg: #1c2541;
-            --accent-gold: #f59e0b;
-            --accent-gold-light: #fbbf24;
-            --primary-blue: #3a86ff;
-            --green-success: #10b981;
-            --text-main: #ffffff;
-            --text-muted: #8d99ae;
-            --border-color: #2b3a67;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            padding-bottom: 90px;
-        }
-
-        /* Royal Header */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 20px;
-            background: var(--card-bg);
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-        }
-
-        .crown-icon {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: #fff;
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
-        }
-
-        .brand-name {
-            font-size: 20px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            background: linear-gradient(to right, #fbbf24, #f59e0b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .user-status {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .currency-toggle {
-            background: #0b132b;
-            border: 1px solid var(--border-color);
-            color: var(--accent-gold-light);
-            padding: 6px 10px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: #2b3a67;
-            border: 2px solid var(--accent-gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            color: var(--text-main);
-            cursor: pointer;
-        }
-
-        /* Container */
-        .container {
-            padding: 20px;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        /* Royal Dashboard Card */
-        .royal-card {
-            background: linear-gradient(135deg, #1c2541, #3a86ff22);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-        }
-
-        .balance-label {
-            font-size: 12px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 4px;
-        }
-
-        .balance-amount {
-            font-size: 30px;
-            font-weight: 800;
-            color: var(--accent-gold-light);
-            margin-bottom: 16px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            border-top: 1px solid var(--border-color);
-            padding-top: 12px;
-        }
-
-        .stat-title {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        .stat-val {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--text-main);
-            display: block;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0b132b; color: #fff; padding-bottom: 70px; }
+        header { background: #1c2541; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #3a86ff; }
+        .logo { font-size: 20px; font-weight: bold; color: #ffd166; }
+        .user-badge { background: #3a86ff; padding: 5px 12px; border-radius: 20px; font-size: 14px; }
+        
+        .container { padding: 15px; max-width: 600px; margin: auto; }
+        
+        /* Balance Card */
+        .balance-card { background: linear-gradient(135deg, #3a86ff, #4361ee); padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(58,134,255,0.3); }
+        .balance-card h3 { font-size: 14px; opacity: 0.8; }
+        .balance-card h1 { font-size: 32px; margin: 10px 0; font-weight: bold; color: #ffd166; }
+        .stats-row { display: flex; justify-content: space-between; margin-top: 15px; font-size: 13px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px; }
 
         /* Tabs */
-        .tabs {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 10px;
-            margin-bottom: 16px;
-        }
+        .tabs { display: flex; gap: 10px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; }
+        .tab-btn { background: #1c2541; border: 1px solid #3a86ff; color: #fff; padding: 8px 15px; border-radius: 20px; cursor: pointer; white-space: nowrap; font-size: 13px; transition: 0.3s; }
+        .tab-btn.active { background: #ffd166; color: #0b132b; font-weight: bold; border-color: #ffd166; }
 
-        .tab {
-            padding: 8px 16px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-muted);
-            white-space: nowrap;
-            cursor: pointer;
-        }
+        /* Task Cards */
+        .task-list { display: flex; flex-direction: column; gap: 12px; }
+        .task-card { background: #1c2541; border: 1px solid #3a86ff; border-radius: 12px; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .task-info h4 { font-size: 15px; margin-bottom: 4px; }
+        .task-info p { font-size: 12px; color: #a5b4fc; }
+        .task-btn { background: #3a86ff; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .task-btn:hover { background: #2563eb; }
+        .task-btn:disabled { background: #4b5563; cursor: not-allowed; }
 
-        .tab.active {
-            background: var(--accent-gold);
-            color: #000;
-            border-color: var(--accent-gold);
-        }
+        /* Navigation Bar */
+        .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #1c2541; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #3a86ff; z-index: 100; }
+        .nav-item { background: none; border: none; color: #94a3b8; font-size: 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+        .nav-item.active { color: #ffd166; }
 
-        /* Task List */
-        .task-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+        /* Sections */
+        .section { display: none; }
+        .section.active { display: block; }
 
-        .task-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+        /* Forms & Modals */
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 13px; margin-bottom: 5px; color: #cbd5e1; }
+        .form-group input, .form-group select { width: 100%; padding: 12px; background: #0b132b; border: 1px solid #3a86ff; color: #fff; border-radius: 8px; }
+        .submit-btn { width: 100%; background: #ffd166; color: #0b132b; border: none; padding: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 15px; margin-top: 10px; }
 
-        .task-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .task-icon {
-            width: 42px;
-            height: 42px;
-            background: rgba(58, 134, 255, 0.15);
-            color: var(--primary-blue);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-
-        .task-details h4 {
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 2px;
-        }
-
-        .task-details p {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        .reward-tag {
-            color: var(--accent-gold-light);
-            font-weight: 700;
-        }
-
-        .btn-claim {
-            padding: 8px 14px;
-            background: var(--primary-blue);
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 12px;
-            cursor: pointer;
-        }
-
-        .btn-claim.done {
-            background: var(--green-success);
-        }
-
-        /* Modal / Popups */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.85);
-            z-index: 200;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .modal-content {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 20px;
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .form-group {
-            margin-bottom: 12px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 10px;
-            background: #0b132b;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            color: #fff;
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 12px;
-            background: var(--accent-gold);
-            color: #000;
-            border: none;
-            border-radius: 10px;
-            font-weight: 800;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .auth-switch {
-            text-align: center;
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 14px;
-        }
-
-        .auth-switch span {
-            color: var(--accent-gold-light);
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        /* Social Share Buttons */
-        .share-btns {
-            display: flex;
-            gap: 10px;
-            margin-top: 12px;
-        }
-
-        .btn-share {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 10px;
-            color: #fff;
-            font-weight: 700;
-            font-size: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .btn-whatsapp { background: #25D366; }
-        .btn-facebook { background: #1877F2; }
-
-        /* Bottom Nav */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            background: var(--card-bg);
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .nav-link {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .nav-link.active {
-            color: var(--accent-gold);
-        }
+        /* Modal Overlay */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
+        .modal-content { background: #1c2541; padding: 25px; border-radius: 15px; width: 100%; max-width: 400px; border: 1px solid #3a86ff; position: relative; }
+        .close-modal { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; color: #ef4444; }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <div class="header">
-        <div class="brand" onclick="reloadDashboard()">
-            <div class="crown-icon"><i class="fa-solid fa-crown"></i></div>
+    <header>
+        <div class="logo">👑 PRINCE EARN</div>
+        <div class="user-badge" id="user-status-badge" onclick="openAuthModal()">Login / Signup</div>
+    </header>
+
+    <div class="container">
+        
+        <!-- HOME SECTION -->
+        <div id="home-section" class="section active">
+            <div class="balance-card">
+                <h3>TOTAL BALANCE</h3>
+                <h1 id="balance-display">Rs. 0.00</h1>
+                <div class="stats-row">
+                    <span>Completed Tasks: <strong id="completed-tasks-count">0</strong></span>
+                    <span>Referral Earnings: <strong id="ref-earnings-display">Rs. 0.00</strong></span>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTaskTab(this, 'all')">All Tasks</button>
+                <button class="tab-btn" onclick="switchTaskTab(this, 'short')">Short Ads (5s)</button>
+                <button class="tab-btn" onclick="switchTaskTab(this, 'video')">Video Watch (1m)</button>
+            </div>
+
+            <!-- Task List -->
+            <div class="task-list" id="task-container">
+                <div class="task-card short">
+                    <div class="task-info">
+                        <h4>Quick View #01</h4>
+                        <p>5 Seconds · +Rs. 0.50</p>
+                    </div>
+                    <button class="task-btn" onclick="startTask(this, 0.50, 5)">Start</button>
+                </div>
+                <div class="task-card short">
+                    <div class="task-info">
+                        <h4>Quick View #02</h4>
+                        <p>5 Seconds · +Rs. 0.50</p>
+                    </div>
+                    <button class="task-btn" onclick="startTask(this, 0.50, 5)">Start</button>
+                </div>
+                <div class="task-card video">
+                    <div class="task-info">
+                        <h4>Full Video Watch</h4>
+                        <p>60 Seconds · +Rs. 3.00</p>
+                    </div>
+                    <button class="task-btn" onclick="startTask(this, 3.00, 60)">Watch</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- WITHDRAW SECTION -->
+        <div id="withdraw-section" class="section">
+            <div class="balance-card">
+                <h3>AVAILABLE FOR WITHDRAWAL</h3>
+                <h1 id="withdraw-balance-display">Rs. 0.00</h1>
+            </div>
+            <div class="task-card" style="display: block; background: #1c2541; padding: 20px;">
+                <h3 style="margin-bottom: 15px; color: #ffd166;">Request Withdrawal</h3>
+                <div class="form-group">
+                    <label>Select Method</label>
+                    <select id="withdraw-method">
+                        <option value="JazzCash">JazzCash</option>
+                        <option value="EasyPaisa">EasyPaisa</option>
+                        <option value="Bank Transfer">Bank Transfer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Account Number / Phone</label>
+                    <input type="text" id="withdraw-account" placeholder="e.g. 03001234567" required>
+                </div>
+                <div class="form-group">
+                    <label>Amount (PKR)</label>
+                    <input type="number" id="withdraw-amount" placeholder="Minimum Rs. 50" required>
+                </div>
+                <button class="submit-btn" onclick="processWithdrawal()">Submit Request</button>
+            </div>
+        </div>
+
+        <!-- REFER SECTION -->
+        <div id="refer-section" class="section">
+            <div class="balance-card" style="text-align: center;">
+                <h3>INVITE & EARN</h3>
+                <p style="margin: 10px 0; font-size: 13px;">Share your link and earn Rs. 10 per referral!</p>
+                <input type="text" id="referral-link-input" readonly style="width: 100%; padding: 10px; background: #0b132b; border: 1px solid #3a86ff; color: #fff; border-radius: 5px; text-align: center; margin-bottom: 10px;">
+                <button class="submit-btn" onclick="copyReferralLink()" style="margin-top: 0;">Copy Referral Link</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- BOTTOM NAVIGATION -->
+    <div class="nav-bar">
+        <button class="nav-item active" onclick="switchNav(this, 'home-section')">
+            🏠 <span>Home</span>
+        </button>
+        <button class="nav-item" onclick="switchNav(this, 'withdraw-section')">
+            💳 <span>Withdraw</span>
+        </button>
+        <button class="nav-item" onclick="switchNav(this, 'refer-section')">
+            👥 <span>Refer</span>
+        </button>
+    </div>
+
+    <!-- AUTH MODAL (SIGNUP / LOGIN) -->
+    <div class="modal" id="auth-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeAuthModal()">&times;</span>
+            <h3 style="margin-bottom: 15px; color: #ffd166;" id="modal-title">Create Free Account</h3>
+            <form id="user-auth-form" onsubmit="handleAuthSubmit(event)">
+                <div class="form-group" id="name-field-group">
+                    <label>Full Name</label>
+                    <input type="text" id="auth-name" placeholder="Enter full name" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number (Mobile)</label>
+                    <input type="tel" id="auth-phone" placeholder="e.g. 03001234567" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="auth-password" placeholder="Create password" required>
+                </div>
+                <button type="submit" class="submit-btn" id="auth-submit-btn">Create Account</button>
+                <p style="text-align: center; margin-top: 12px; font-size: 13px; cursor: pointer; color: #3a86ff;" onclick="toggleAuthMode()" id="auth-switch-text">Already have an account? Sign In</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- SCRIPT LOGIC -->
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyQuCQ_DgDKqz_Og64yuzeeUu5awmS-D_CCIkEOtN3Q9pgxBc3kcgj2zBDO3S4XZdvTbg/exec';
+
+        // Local Storage State Management
+        let balance = parseFloat(localStorage.getItem('pe_balance')) || 0.00;
+        let completedTasks = parseInt(localStorage.getItem('pe_completed')) || 0;
+        let refEarnings = parseFloat(localStorage.getItem('pe_ref_earnings')) || 0.00;
+        let currentUser = localStorage.getItem('pe_user_phone') || null;
+        let isLoginMode = false;
+
+        window.onload = function() {
+            updateUI();
+            setupReferralLink();
+            if(currentUser) {
+                document.getElementById('user-status-badge').innerText = "👤 " + currentUser;
+            }
+        };
+
+        function updateUI() {
+            document.getElementById('balance-display').innerText = `Rs. ${balance.toFixed(2)}`;
+            document.getElementById('withdraw-balance-display').innerText = `Rs. ${balance.toFixed(2)}`;
+            document.getElementById('completed-tasks-count').innerText = completedTasks;
+            document.getElementById('ref-earnings-display').innerText = `Rs. ${refEarnings.toFixed(2)}`;
+
+            localStorage.setItem('pe_balance', balance);
+            localStorage.setItem('pe_completed', completedTasks);
+            localStorage.setItem('pe_ref_earnings', refEarnings);
+        }
+
+        // Navigation Switch
+        function switchNav(btn, sectionId) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // Task Tabs Switch
+        function switchTaskTab(btn, category) {
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            btn.classList.add('active');
+            
+            document.querySelectorAll('.task-card').forEach(card => {
+                if(category === 'all' || card.classList.contains(category)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Task Completion with Timer
+        function startTask(btn, reward, duration) {
+            btn.disabled = true;
+            let timeLeft = duration;
+            btn.innerText = `${timeLeft}s...`;
+
+            let timer = setInterval(() => {
+                timeLeft--;
+                if(timeLeft > 0) {
+                    btn.innerText = `${timeLeft}s...`;
+                } else {
+                    clearInterval(timer);
+                    btn.innerText = "Completed";
+                    btn.style.background = "#10b981";
+                    
+                    balance += reward;
+                    completedTasks++;
+                    updateUI();
+                    
+                    // Sync Task completion to Google Sheet
+                    sendDataToSheet({
+                        action: "task_complete",
+                        phone: currentUser || "Guest",
+                        reward: reward,
+                        time: new Date().toLocaleString()
+                    });
+                }
+            }, 1000);
+        }
+
+        // Withdrawal Processing
+        function processWithdrawal() {
+            const method = document.getElementById('withdraw-method').value;
+            const account = document.getElementById('withdraw-account').value.trim();
+            const amount = parseFloat(document.getElementById('withdraw-amount').value);
+
+            if(!account || isNaN(amount)) {
+                alert('Please fill in all details correctly!');
+                return;
+            }
+            if(amount < 50) {
+                alert('Minimum withdrawal amount is Rs. 50');
+                return;
+            }
+            if(amount > balance) {
+                alert('Insufficient balance!');
+                return;
+            }
+
+            // Deduct balance and update
+            balance -= amount;
+            updateUI();
+
+            // Send to Google Sheet
+            sendDataToSheet({
+                action: "withdraw",
+                phone: currentUser || "Guest",
+                method: method,
+                account: account,
+                amount: amount,
+                time: new Date().toLocaleString()
+            });
+
+            alert('Withdrawal Request Submitted Successfully!');
+            document.getElementById('withdraw-account').value = '';
+            document.getElementById('withdraw-amount').value = '';
+        }
+
+        // Auth Modal Controls
+        function openAuthModal() {
+            if(!currentUser) {
+                document.getElementById('auth-modal').style.display = 'flex';
+            }
+        }
+        function closeAuthModal() {
+            document.getElementById('auth-modal').style.display = 'none';
+        }
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            document.getElementById('modal-title').innerText = isLoginMode ? "Sign In to Account" : "Create Free Account";
+            document.getElementById('auth-submit-btn').innerText = isLoginMode ? "Sign In" : "Create Account";
+            document.getElementById('name-field-group').style.display = isLoginMode ? "none" : "block";
+            document.getElementById('auth-name').required = !isLoginMode;
+            document.getElementById('auth-switch-text').innerText = isLoginMode ? "Don't have an account? Sign Up" : "Already have an account? Sign In";
+        }
+
+        // Handle Signup / Login Form Submit
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('auth-name').value.trim();
+            const phone = document.getElementById('auth-phone').value.trim();
+            const password = document.getElementById('auth-password').value.trim();
+
+            currentUser = phone;
+            localStorage.setItem('pe_user_phone', phone);
+            document.getElementById('user-status-badge').innerText = "👤 " + phone;
+
+            sendDataToSheet({
+                action: isLoginMode ? "login" : "signup",
+                name: name || "User",
+                phone: phone,
+                password: password,
+                time: new Date().toLocaleString()
+            });
+
+            alert(isLoginMode ? "Signed In Successfully!" : "Account Created Successfully!");
+            closeAuthModal();
+        }
+
+        // Referral System
+        function setupReferralLink() {
+            const randomCode = currentUser ? currentUser : Math.floor(100000 + Math.random() * 900000);
+            const refLink = window.location.origin + window.location.pathname + "?ref=" + randomCode;
+            document.getElementById('referral-link-input').value = refLink;
+        }
+
+        function copyReferralLink() {
+            const copyText = document.getElementById('referral-link-input');
+            copyText.select();
+            navigator.clipboard.writeText(copyText.value);
+            alert('Referral Link Copied to Clipboard!');
+        }
+
+        // Universal Google Sheet Sync Function
+        function sendDataToSheet(data) {
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).catch(err => console.error('Sheet Sync Error:', err));
+        }
+    </script>
+</body>
+</html>
+ class="fa-solid fa-crown"></i></div>
             <div class="brand-name">PRINCE EARN</div>
         </div>
         <div class="user-status">
@@ -781,8 +770,7 @@ if (registerForm) {
     })
     .catch(error => console.error('Error!', error.message));
   });
-          }
-        
+}
     </script>
 </body>
 </html>
