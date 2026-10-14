@@ -8,8 +8,8 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #0b132b; color: #fff; padding-bottom: 70px; }
         header { background: #1c2541; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #3a86ff; }
-        .logo { font-size: 20px; font-weight: bold; color: #ffd166; }
-        .user-badge { background: #3a86ff; padding: 5px 12px; border-radius: 20px; font-size: 14px; }
+        .logo { font-size: 20px; font-weight: bold; color: #ffd166; display: flex; align-items: center; gap: 8px; }
+        .user-badge { background: #3a86ff; padding: 5px 12px; border-radius: 20px; font-size: 14px; cursor: pointer; }
         
         .container { padding: 15px; max-width: 600px; margin: auto; }
         
@@ -43,14 +43,22 @@
         .section.active { display: block; }
 
         /* Forms & Modals */
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 13px; margin-bottom: 5px; color: #cbd5e1; }
-        .form-group input, .form-group select { width: 100%; padding: 12px; background: #0b132b; border: 1px solid #3a86ff; color: #fff; border-radius: 8px; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 12px; margin-bottom: 4px; color: #cbd5e1; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; background: #0b132b; border: 1px solid #3a86ff; color: #fff; border-radius: 8px; font-size: 14px; }
         .submit-btn { width: 100%; background: #ffd166; color: #0b132b; border: none; padding: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 15px; margin-top: 10px; }
 
+        /* Social Share Buttons */
+        .social-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
+        .social-btn { padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: #fff; font-size: 13px; text-align: center; }
+        .whatsapp { background: #25d366; }
+        .facebook { background: #1877f2; }
+        .insta { background: #e1306c; }
+        .snapchat { background: #fffc00; color: #000; }
+
         /* Modal Overlay */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
-        .modal-content { background: #1c2541; padding: 25px; border-radius: 15px; width: 100%; max-width: 400px; border: 1px solid #3a86ff; position: relative; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000; padding: 15px; overflow-y: auto; }
+        .modal-content { background: #1c2541; padding: 20px; border-radius: 15px; width: 100%; max-width: 400px; border: 1px solid #3a86ff; position: relative; max-height: 90vh; overflow-y: auto; }
         .close-modal { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; color: #ef4444; }
     </style>
 </head>
@@ -79,6 +87,8 @@
                 <button class="tab-btn active" onclick="switchTaskTab(this, 'all')">All Tasks</button>
                 <button class="tab-btn" onclick="switchTaskTab(this, 'short')">Short Ads (5s)</button>
                 <button class="tab-btn" onclick="switchTaskTab(this, 'video')">Video Watch (1m)</button>
+                <button class="tab-btn" onclick="switchTaskTab(this, 'cpa')">CPA & Apps</button>
+                <button class="tab-btn" onclick="switchTaskTab(this, 'international')">International</button>
             </div>
 
             <!-- Task List -->
@@ -88,21 +98,35 @@
                         <h4>Quick View #01</h4>
                         <p>5 Seconds · +Rs. 0.50</p>
                     </div>
-                    <button class="task-btn" onclick="startTask(this, 0.50, 5)">Start</button>
+                    <button class="task-btn" onclick="startTask(this, 0.50, 5, 'https://www.profitablecpmrate.com/your-adsterra-link')">Start</button>
                 </div>
                 <div class="task-card short">
                     <div class="task-info">
                         <h4>Quick View #02</h4>
                         <p>5 Seconds · +Rs. 0.50</p>
                     </div>
-                    <button class="task-btn" onclick="startTask(this, 0.50, 5)">Start</button>
+                    <button class="task-btn" onclick="startTask(this, 0.50, 5, 'https://www.profitablecpmrate.com/your-adsterra-link')">Start</button>
                 </div>
                 <div class="task-card video">
                     <div class="task-info">
-                        <h4>Full Video Watch</h4>
+                        <h4>Full Video Watch & App Install</h4>
                         <p>60 Seconds · +Rs. 3.00</p>
                     </div>
-                    <button class="task-btn" onclick="startTask(this, 3.00, 60)">Watch</button>
+                    <button class="task-btn" onclick="startTask(this, 3.00, 60, 'https://www.profitablecpmrate.com/your-adsterra-link')">Watch</button>
+                </div>
+                <div class="task-card cpa">
+                    <div class="task-info">
+                        <h4>Install App & Signup</h4>
+                        <p>CPA Offer · +Rs. 50.00</p>
+                    </div>
+                    <button class="task-btn" onclick="startTask(this, 50.00, 10, 'https://www.profitablecpmrate.com/your-adsterra-link')">Install</button>
+                </div>
+                <div class="task-card international">
+                    <div class="task-info">
+                        <h4>Global Survey Offer</h4>
+                        <p>International · +Rs. 25.00</p>
+                    </div>
+                    <button class="task-btn" onclick="startTask(this, 25.00, 10, 'https://www.profitablecpmrate.com/your-adsterra-link')">Visit</button>
                 </div>
             </div>
         </div>
@@ -118,14 +142,18 @@
                 <div class="form-group">
                     <label>Select Method</label>
                     <select id="withdraw-method">
-                        <option value="JazzCash">JazzCash</option>
-                        <option value="EasyPaisa">EasyPaisa</option>
-                        <option value="Bank Transfer">Bank Transfer</option>
+                        <option value="JazzCash">JazzCash (Pakistan)</option>
+                        <option value="EasyPaisa">EasyPaisa (Pakistan)</option>
+                        <option value="PayPal">PayPal (International)</option>
+                        <option value="Payoneer">Payoneer (International)</option>
+                        <option value="Visa / Mastercard">Visa / Mastercard</option>
+                        <option value="Crypto / USDT">Crypto / USDT (Binance)</option>
+                        <option value="Bank Transfer">Bank Transfer (Global)</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Account Number / Phone</label>
-                    <input type="text" id="withdraw-account" placeholder="e.g. 03001234567" required>
+                    <label>Account Number / Email / Wallet ID</label>
+                    <input type="text" id="withdraw-account" placeholder="e.g. 03001234567 or email@domain.com" required>
                 </div>
                 <div class="form-group">
                     <label>Amount (PKR)</label>
@@ -142,6 +170,13 @@
                 <p style="margin: 10px 0; font-size: 13px;">Share your link and earn Rs. 10 per referral!</p>
                 <input type="text" id="referral-link-input" readonly style="width: 100%; padding: 10px; background: #0b132b; border: 1px solid #3a86ff; color: #fff; border-radius: 5px; text-align: center; margin-bottom: 10px;">
                 <button class="submit-btn" onclick="copyReferralLink()" style="margin-top: 0;">Copy Referral Link</button>
+                
+                <div class="social-grid">
+                    <button class="social-btn whatsapp" onclick="shareSocial('whatsapp')">WhatsApp</button>
+                    <button class="social-btn facebook" onclick="shareSocial('facebook')">Facebook</button>
+                    <button class="social-btn insta" onclick="shareSocial('instagram')">Instagram</button>
+                    <button class="social-btn snapchat" onclick="shareSocial('snapchat')">Snapchat</button>
+                </div>
             </div>
         </div>
 
@@ -160,7 +195,7 @@
         </button>
     </div>
 
-    <!-- AUTH MODAL (SIGNUP / LOGIN) -->
+    <!-- AUTH MODAL (SIGNUP / LOGIN WITH 5 FIELDS) -->
     <div class="modal" id="auth-modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeAuthModal()">&times;</span>
@@ -170,6 +205,10 @@
                     <label>Full Name</label>
                     <input type="text" id="auth-name" placeholder="Enter full name" required>
                 </div>
+                <div class="form-group" id="email-field-group">
+                    <label>Email Address</label>
+                    <input type="email" id="auth-email" placeholder="Enter email address" required>
+                </div>
                 <div class="form-group">
                     <label>Phone Number (Mobile)</label>
                     <input type="tel" id="auth-phone" placeholder="e.g. 03001234567" required>
@@ -178,7 +217,165 @@
                     <label>Password</label>
                     <input type="password" id="auth-password" placeholder="Create password" required>
                 </div>
+                <div class="form-group" id="confirm-pass-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="auth-confirm-password" placeholder="Confirm password" required>
+                </div>
                 <button type="submit" class="submit-btn" id="auth-submit-btn">Create Account</button>
+                <p style="text-align: center; margin-top: 12px; font-size: 13px; cursor: pointer; color: #3a86ff;" onclick="toggleAuthMode()" id="auth-switch-text">Already have an account? Sign In</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- SCRIPT LOGIC -->
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyQuCQ_DgDKqz_Og64yuzeeUu5awmS-D_CCIkEOtN3Q9pgxBc3kcgj2zBDO3S4XZdvTbg/exec';
+
+        let balance = parseFloat(localStorage.getItem('pe_balance')) || 0.00;
+        let completedTasks = parseInt(localStorage.getItem('pe_completed')) || 0;
+        let refEarnings = parseFloat(localStorage.getItem('pe_ref_earnings')) || 0.00;
+        let currentUser = localStorage.getItem('pe_user_phone') || null;
+        let isLoginMode = false;
+
+        window.onload = function() {
+            updateUI();
+            setupReferralLink();
+            if(currentUser) {
+                document.getElementById('user-status-badge').innerText = "👤 " + currentUser;
+            }
+        };
+
+        function updateUI() {
+            document.getElementById('balance-display').innerText = `Rs. ${balance.toFixed(2)}`;
+            document.getElementById('withdraw-balance-display').innerText = `Rs. ${balance.toFixed(2)}`;
+            document.getElementById('completed-tasks-count').innerText = completedTasks;
+            document.getElementById('ref-earnings-display').innerText = `Rs. ${refEarnings.toFixed(2)}`;
+
+            localStorage.setItem('pe_balance', balance);
+            localStorage.setItem('pe_completed', completedTasks);
+            localStorage.setItem('pe_ref_earnings', refEarnings);
+        }
+
+        function switchNav(btn, sectionId) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        function switchTaskTab(btn, category) {
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            btn.classList.add('active');
+            
+            document.querySelectorAll('.task-card').forEach(card => {
+                if(category === 'all' || card.classList.contains(category)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function startTask(btn, reward, duration, adLink) {
+            btn.disabled = true;
+            let timeLeft = duration;
+            btn.innerText = `${timeLeft}s...`;
+
+            if(adLink) {
+                window.open(adLink, '_blank');
+            }
+
+            let timer = setInterval(() => {
+                timeLeft--;
+                if(timeLeft > 0) {
+                    btn.innerText = `${timeLeft}s...`;
+                } else {
+                    clearInterval(timer);
+                    btn.innerText = "Completed";
+                    btn.style.background = "#10b981";
+                    
+                    balance += reward;
+                    completedTasks++;
+                    updateUI();
+                    
+                    sendDataToSheet({
+                        action: "task_complete",
+                        phone: currentUser || "Guest",
+                        reward: reward,
+                        time: new Date().toLocaleString()
+                    });
+                }
+            }, 1000);
+        }
+
+        function processWithdrawal() {
+            const method = document.getElementById('withdraw-method').value;
+            const account = document.getElementById('withdraw-account').value.trim();
+            const amount = parseFloat(document.getElementById('withdraw-amount').value);
+
+            if(!account || isNaN(amount)) {
+                alert('Please fill in all details correctly!');
+                return;
+            }
+            if(amount < 50) {
+                alert('Minimum withdrawal amount is Rs. 50');
+                return;
+            }
+            if(amount > balance) {
+                alert('Insufficient balance!');
+                return;
+            }
+
+            balance -= amount;
+            updateUI();
+
+            sendDataToSheet({
+                action: "withdraw",
+                phone: currentUser || "Guest",
+                method: method,
+                account: account,
+                amount: amount,
+                time: new Date().toLocaleString()
+            });
+
+            alert('Withdrawal Request Submitted Successfully!');
+            document.getElementById('withdraw-account').value = '';
+            document.getElementById('withdraw-amount').value = '';
+        }
+
+        function openAuthModal() {
+            if(!currentUser) {
+                alert("Prince Earn requires permissions for storage, media, and network state to run securely.");
+                document.getElementById('auth-modal').style.display = 'flex';
+            }
+        }
+        function closeAuthModal() {
+            document.getElementById('auth-modal').style.display = 'none';
+        }
+
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            document.getElementById('modal-title').innerText = isLoginMode ? "Sign In to Account" : "Create Free Account";
+            document.getElementById('auth-submit-btn').innerText = isLoginMode ? "Sign In" : "Create Account";
+            
+            document.getElementById('name-field-group').style.display = isLoginMode ? "none" : "block";
+            document.getElementById('email-field-group').style.display = isLoginMode ? "none" : "block";
+            document.getElementById('confirm-pass-group').style.display = isLoginMode ? "none" : "block";
+            
+            document.getElementById('auth-name').required = !isLoginMode;
+            document.getElementById('auth-email').required = !isLoginMode;
+            document.getElementById('auth-confirm-password').required = !isLoginMode;
+            
+            document.getElementById('auth-switch-text').innerText = isLoginMode ? "Don't have an account? Sign Up" : "Already have an account? Sign In";
+        }
+
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('auth-name').value.trim();
+            const email = document.getElementById('auth-email').value.trim();
+            const phone = document.getElementById('auth-phone').value.trim();
+            const password = document.getElementById('auth-password').value.trim();
+            const confirmPass = document.getEth-submit-btn">Create Account</button>
                 <p style="text-align: center; margin-top: 12px; font-size: 13px; cursor: pointer; color: #3a86ff;" onclick="toggleAuthMode()" id="auth-switch-text">Already have an account? Sign In</p>
             </form>
         </div>
