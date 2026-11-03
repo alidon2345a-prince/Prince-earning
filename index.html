@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prince Earn - Online Earning Platform</title>
+    <!-- PWA Manifest Link -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1c2541">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #0b132b; color: #fff; padding-bottom: 70px; }
         header { background: #1c2541; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #3a86ff; }
         .logo { font-size: 20px; font-weight: bold; color: #ffd166; display: flex; align-items: center; gap: 8px; }
         .user-badge { background: #3a86ff; padding: 5px 12px; border-radius: 20px; font-size: 14px; cursor: pointer; }
-        
+
         .container { padding: 15px; max-width: 600px; margin: auto; }
         
         /* Balance Card */
@@ -18,6 +21,15 @@
         .balance-card h3 { font-size: 14px; opacity: 0.8; }
         .balance-card h1 { font-size: 32px; margin: 10px 0; font-weight: bold; color: #ffd166; }
         .stats-row { display: flex; justify-content: space-between; margin-top: 15px; font-size: 13px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px; }
+
+        /* 7-Day Bonus Grid */
+        .bonus-container { background: #1c2541; border: 1px solid #3a86ff; border-radius: 12px; padding: 15px; margin-bottom: 20px; }
+        .bonus-title { font-size: 14px; font-weight: bold; color: #ffd166; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .streak-badge { background: #ffd166; color: #0b132b; font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: bold; }
+        .streak-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 10px; }
+        .streak-day { background: #0b132b; border: 1px solid #3a86ff; border-radius: 6px; padding: 8px 2px; text-align: center; font-size: 10px; color: #a5b4fc; }
+        .streak-day.active { border-color: #ffd166; background: rgba(255,209,102,0.1); color: #ffd166; font-weight: bold; }
+        .streak-day.completed { background: #10b981; color: #fff; border-color: #10b981; }
 
         /* Tabs */
         .tabs { display: flex; gap: 10px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; }
@@ -56,10 +68,15 @@
         .insta { background: #e1306c; }
         .snapchat { background: #fffc00; color: #000; }
 
+        /* History Table */
+        .history-table { width: 100%; font-size: 12px; margin-top: 10px; border-collapse: collapse; }
+        .history-table th, .history-table td { border: 1px solid #3a86ff; padding: 8px; text-align: center; }
+        .history-table th { background: #1c2541; color: #ffd166; }
+
         /* Modal Overlay */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000; padding: 15px; overflow-y: auto; }
         .modal-content { background: #1c2541; padding: 20px; border-radius: 15px; width: 100%; max-width: 400px; border: 1px solid #3a86ff; position: relative; max-height: 90vh; overflow-y: auto; }
-        .close-modal { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; color: #ef4444; }
+        .close-modal { position: absolute; top: 10px; right: 15px; font-size: 22px; cursor: pointer; color: #ef4444; background: none; border: none; padding: 5px; z-index: 10; }
     </style>
 </head>
 <body>
@@ -82,6 +99,24 @@
                 </div>
             </div>
 
+            <!-- 7-Day Daily Check-in Bonus System -->
+            <div class="bonus-container">
+                <div class="bonus-title">
+                    <span>🎁 7-Day Daily Rewards</span>
+                    <span class="streak-badge" id="streak-counter">Day 1</span>
+                </div>
+                <div class="streak-grid">
+                    <div class="streak-day" id="s-day-1">D1<br><b>Rs.1</b></div>
+                    <div class="streak-day" id="s-day-2">D2<br><b>Rs.2</b></div>
+                    <div class="streak-day" id="s-day-3">D3<br><b>Rs.3</b></div>
+                    <div class="streak-day" id="s-day-4">D4<br><b>Rs.4</b></div>
+                    <div class="streak-day" id="s-day-5">D5<br><b>Rs.5</b></div>
+                    <div class="streak-day" id="s-day-6">D6<br><b>Rs.7</b></div>
+                    <div class="streak-day" id="s-day-7">D7<br><b>Rs.10</b></div>
+                </div>
+                <button class="submit-btn" id="claim-bonus-btn" onclick="claimDailyBonus()" style="margin-top: 5px;">Claim Today's Reward</button>
+            </div>
+
             <!-- Tabs -->
             <div class="tabs">
                 <button class="tab-btn active" onclick="switchTaskTab(this, 'all')">All Tasks</button>
@@ -98,35 +133,35 @@
                         <h4>Quick View #01</h4>
                         <p>5 Seconds · +Rs. 0.50</p>
                     </div>
-                    <button class="task-btn" onclick="startTask(this, 0.50, 5, 'https://www.profitablecpmrate.com/your-adsterra-link')">Start</button>
+                    <button class="task-btn" onclick="startTask(this, 0.50, 5, 'https://asiafilm.org/4/fc1f07d232be81a15872b40b39c2212c')">Start</button>
                 </div>
                 <div class="task-card short">
                     <div class="task-info">
                         <h4>Quick View #02</h4>
                         <p>5 Seconds · +Rs. 0.50</p>
                     </div>
-                    <button class="task-btn" onclick="startTask(this, 0.50, 5, 'https://www.profitablecpmrate.com/your-adsterra-link')">Start</button>
+                    <button class="task-btn" onclick="startTask(this, 0.50, 5, 'https://asiafilm.org/4/fc1f07d232be81a15872b40b39c2212c')">Start</button>
                 </div>
                 <div class="task-card video">
                     <div class="task-info">
                         <h4>Full Video Watch & App Install</h4>
                         <p>60 Seconds · +Rs. 3.00</p>
                     </div>
-                    <button class="task-btn" onclick="startTask(this, 3.00, 60, 'https://www.profitablecpmrate.com/your-adsterra-link')">Watch</button>
+                    <button class="task-btn" onclick="startTask(this, 3.00, 60, 'https://asiafilm.org/4/fc1f07d232be81a15872b40b39c2212c')">Watch</button>
                 </div>
                 <div class="task-card cpa">
                     <div class="task-info">
                         <h4>Install App & Signup</h4>
                         <p>CPA Offer · +Rs. 50.00</p>
                     </div>
-                    <button class="task-btn" onclick="startTask(this, 50.00, 10, 'https://www.profitablecpmrate.com/your-adsterra-link')">Install</button>
+                    <button class="task-btn" onclick="startTask(this, 50.00, 10, 'https://asiafilm.org/4/fc1f07d232be81a15872b40b39c2212c')">Install</button>
                 </div>
                 <div class="task-card international">
                     <div class="task-info">
                         <h4>Global Survey Offer</h4>
                         <p>International · +Rs. 25.00</p>
                     </div>
-                    <button class="task-btn" onclick="startTask(this, 25.00, 10, 'https://www.profitablecpmrate.com/your-adsterra-link')">Visit</button>
+                    <button class="task-btn" onclick="startTask(this, 25.00, 10, 'https://asiafilm.org/4/fc1f07d232be81a15872b40b39c2212c')">Visit</button>
                 </div>
             </div>
         </div>
@@ -180,6 +215,32 @@
             </div>
         </div>
 
+        <!-- PROFILE SECTION -->
+        <div id="profile-section" class="section">
+            <div class="balance-card">
+                <h3>USER PROFILE</h3>
+                <p style="margin-top: 10px; font-size: 14px;">Phone: <strong id="profile-phone">Guest</strong></p>
+                <p style="font-size: 14px;">Name: <strong id="profile-name">Not Logged In</strong></p>
+                <p style="font-size: 14px;">Email: <strong id="profile-email">N/A</strong></p>
+            </div>
+            
+            <div class="task-card" style="display: block; background: #1c2541; padding: 15px;">
+                <h4 style="color: #ffd166; margin-bottom: 10px;">Withdrawal History</h4>
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-rows">
+                        <tr><td colspan="3">No requests yet</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
     <!-- BOTTOM NAVIGATION -->
@@ -193,12 +254,15 @@
         <button class="nav-item" onclick="switchNav(this, 'refer-section')">
             👥 <span>Refer</span>
         </button>
+        <button class="nav-item" onclick="switchNav(this, 'profile-section')">
+            👤 <span>Profile</span>
+        </button>
     </div>
 
-    <!-- AUTH MODAL (SIGNUP / LOGIN WITH 5 FIELDS) -->
+    <!-- AUTH MODAL -->
     <div class="modal" id="auth-modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeAuthModal()">&times;</span>
+            <button class="close-modal" onclick="closeAuthModal()">✕</button>
             <h3 style="margin-bottom: 15px; color: #ffd166;" id="modal-title">Create Free Account</h3>
             <form id="user-auth-form" onsubmit="handleAuthSubmit(event)">
                 <div class="form-group" id="name-field-group">
@@ -222,7 +286,7 @@
                     <input type="password" id="auth-confirm-password" placeholder="Confirm password" required>
                 </div>
                 <button type="submit" class="submit-btn" id="auth-submit-btn">Create Account</button>
-                <p style="text-align: center; margin-top: 12px; font-size: 13px; cursor: pointer; color: #3a86ff;" onclick="toggleAuthMode()" id="auth-switch-text">Already have an account? Sign In</p>
+                <p style="text-align: center; margin-top: 12px; font-size: 13px; cursor: pointer; color: #3a86ff;" onclick="toggleAuthMode()" id="auth-switch-text">Already have an account? <b>Sign In</b></p>
             </form>
         </div>
     </div>
@@ -235,13 +299,27 @@
         let completedTasks = parseInt(localStorage.getItem('pe_completed')) || 0;
         let refEarnings = parseFloat(localStorage.getItem('pe_ref_earnings')) || 0.00;
         let currentUser = localStorage.getItem('pe_user_phone') || null;
+        let currentName = localStorage.getItem('pe_user_name') || "Guest";
+        let currentEmail = localStorage.getItem('pe_user_email') || "N/A";
         let isLoginMode = false;
+
+        const rewardsArr = [1.00, 2.00, 3.00, 4.00, 5.00, 7.00, 10.00];
 
         window.onload = function() {
             updateUI();
             setupReferralLink();
+            updateBonusUI();
+            loadHistoryTable();
             if(currentUser) {
                 document.getElementById('user-status-badge').innerText = "👤 " + currentUser;
+                document.getElementById('profile-phone').innerText = currentUser;
+                document.getElementById('profile-name').innerText = currentName;
+                document.getElementById('profile-email').innerText = currentEmail;
+            }
+
+            // Register Service Worker for PWA
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('data:text/javascript;base64,').catch(() => {});
             }
         };
 
@@ -264,710 +342,4 @@
         }
 
         function switchTaskTab(btn, category) {
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            btn.classList.add('active');
-            
-            document.querySelectorAll('.task-card').forEach(card => {
-                if(category === 'all' || card.classList.contains(category)) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-
-        function startTask(btn, reward, duration, adLink) {
-            btn.disabled = true;
-            let timeLeft = duration;
-            btn.innerText = `${timeLeft}s...`;
-
-            if(adLink) {
-                window.open(adLink, '_blank');
-            }
-
-            let timer = setInterval(() => {
-                timeLeft--;
-                if(timeLeft > 0) {
-                    btn.innerText = `${timeLeft}s...`;
-                } else {
-                    clearInterval(timer);
-                    btn.innerText = "Completed";
-                    btn.style.background = "#10b981";
-                    
-                    balance += reward;
-                    completedTasks++;
-                    updateUI();
-                    
-                    sendDataToSheet({
-                        action: "task_complete",
-                        phone: currentUser || "Guest",
-                        reward: reward,
-                        time: new Date().toLocaleString()
-                    });
-                }
-            }, 1000);
-        }
-
-        function processWithdrawal() {
-            const method = document.getElementById('withdraw-method').value;
-            const account = document.getElementById('withdraw-account').value.trim();
-            const amount = parseFloat(document.getElementById('withdraw-amount').value);
-
-            if(!account || isNaN(amount)) {
-                alert('Please fill in all details correctly!');
-                return;
-            }
-            if(amount < 50) {
-                alert('Minimum withdrawal amount is Rs. 50');
-                return;
-            }
-            if(amount > balance) {
-                alert('Insufficient balance!');
-                return;
-            }
-
-            balance -= amount;
-            updateUI();
-
-            sendDataToSheet({
-                action: "withdraw",
-                phone: currentUser || "Guest",
-                method: method,
-                account: account,
-                amount: amount,
-                time: new Date().toLocaleString()
-            });
-
-            alert('Withdrawal Request Submitted Successfully!');
-            document.getElementById('withdraw-account').value = '';
-            document.getElementById('withdraw-amount').value = '';
-        }
-
-        function openAuthModal() {
-            if(!currentUser) {
-                alert("Prince Earn requires permissions for storage, media, and network state to run securely.");
-                document.getElementById('auth-modal').style.display = 'flex';
-            }
-        }
-        function closeAuthModal() {
-            document.getElementById('auth-modal').style.display = 'none';
-        }
-
-        function toggleAuthMode() {
-            isLoginMode = !isLoginMode;
-            document.getElementById('modal-title').innerText = isLoginMode ? "Sign In to Account" : "Create Free Account";
-            document.getElementById('auth-submit-btn').innerText = isLoginMode ? "Sign In" : "Create Account";
-            
-            document.getElementById('name-field-group').style.display = isLoginMode ? "none" : "block";
-            document.getElementById('email-field-group').style.display = isLoginMode ? "none" : "block";
-            document.getElementById('confirm-pass-group').style.display = isLoginMode ? "none" : "block";
-            
-            document.getElementById('auth-name').required = !isLoginMode;
-            document.getElementById('auth-email').required = !isLoginMode;
-            document.getElementById('auth-confirm-password').required = !isLoginMode;
-            
-            document.getElementById('auth-switch-text').innerText = isLoginMode ? "Don't have an account? Sign Up" : "Already have an account? Sign In";
-        }
-
-        function handleAuthSubmit(e) {
-            e.preventDefault();
-            const name = document.getElementById('auth-name').value.trim();
-            const email = document.getElementById('auth-email').value.trim();
-            const phone = document.getElementById('auth-phone').value.trim();
-            const password = document.getElementById('auth-password').value.trim();
-            const confirmPass = document.getEth-submit-btn">Create Account</button>
-                <p style="text-align: center; margin-top: 12px; font-size: 13px; cursor: pointer; color: #3a86ff;" onclick="toggleAuthMode()" id="auth-switch-text">Already have an account? Sign In</p>
-            </form>
-        </div>
-    </div>
-
-    <!-- SCRIPT LOGIC -->
-    <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbyQuCQ_DgDKqz_Og64yuzeeUu5awmS-D_CCIkEOtN3Q9pgxBc3kcgj2zBDO3S4XZdvTbg/exec';
-
-        // Local Storage State Management
-        let balance = parseFloat(localStorage.getItem('pe_balance')) || 0.00;
-        let completedTasks = parseInt(localStorage.getItem('pe_completed')) || 0;
-        let refEarnings = parseFloat(localStorage.getItem('pe_ref_earnings')) || 0.00;
-        let currentUser = localStorage.getItem('pe_user_phone') || null;
-        let isLoginMode = false;
-
-        window.onload = function() {
-            updateUI();
-            setupReferralLink();
-            if(currentUser) {
-                document.getElementById('user-status-badge').innerText = "👤 " + currentUser;
-            }
-        };
-
-        function updateUI() {
-            document.getElementById('balance-display').innerText = `Rs. ${balance.toFixed(2)}`;
-            document.getElementById('withdraw-balance-display').innerText = `Rs. ${balance.toFixed(2)}`;
-            document.getElementById('completed-tasks-count').innerText = completedTasks;
-            document.getElementById('ref-earnings-display').innerText = `Rs. ${refEarnings.toFixed(2)}`;
-
-            localStorage.setItem('pe_balance', balance);
-            localStorage.setItem('pe_completed', completedTasks);
-            localStorage.setItem('pe_ref_earnings', refEarnings);
-        }
-
-        // Navigation Switch
-        function switchNav(btn, sectionId) {
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
-            btn.classList.add('active');
-            document.getElementById(sectionId).classList.add('active');
-        }
-
-        // Task Tabs Switch
-        function switchTaskTab(btn, category) {
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            btn.classList.add('active');
-            
-            document.querySelectorAll('.task-card').forEach(card => {
-                if(category === 'all' || card.classList.contains(category)) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-
-        // Task Completion with Timer
-        function startTask(btn, reward, duration) {
-            btn.disabled = true;
-            let timeLeft = duration;
-            btn.innerText = `${timeLeft}s...`;
-
-            let timer = setInterval(() => {
-                timeLeft--;
-                if(timeLeft > 0) {
-                    btn.innerText = `${timeLeft}s...`;
-                } else {
-                    clearInterval(timer);
-                    btn.innerText = "Completed";
-                    btn.style.background = "#10b981";
-                    
-                    balance += reward;
-                    completedTasks++;
-                    updateUI();
-                    
-                    // Sync Task completion to Google Sheet
-                    sendDataToSheet({
-                        action: "task_complete",
-                        phone: currentUser || "Guest",
-                        reward: reward,
-                        time: new Date().toLocaleString()
-                    });
-                }
-            }, 1000);
-        }
-
-        // Withdrawal Processing
-        function processWithdrawal() {
-            const method = document.getElementById('withdraw-method').value;
-            const account = document.getElementById('withdraw-account').value.trim();
-            const amount = parseFloat(document.getElementById('withdraw-amount').value);
-
-            if(!account || isNaN(amount)) {
-                alert('Please fill in all details correctly!');
-                return;
-            }
-            if(amount < 50) {
-                alert('Minimum withdrawal amount is Rs. 50');
-                return;
-            }
-            if(amount > balance) {
-                alert('Insufficient balance!');
-                return;
-            }
-
-            // Deduct balance and update
-            balance -= amount;
-            updateUI();
-
-            // Send to Google Sheet
-            sendDataToSheet({
-                action: "withdraw",
-                phone: currentUser || "Guest",
-                method: method,
-                account: account,
-                amount: amount,
-                time: new Date().toLocaleString()
-            });
-
-            alert('Withdrawal Request Submitted Successfully!');
-            document.getElementById('withdraw-account').value = '';
-            document.getElementById('withdraw-amount').value = '';
-        }
-
-        // Auth Modal Controls
-        function openAuthModal() {
-            if(!currentUser) {
-                document.getElementById('auth-modal').style.display = 'flex';
-            }
-        }
-        function closeAuthModal() {
-            document.getElementById('auth-modal').style.display = 'none';
-        }
-        function toggleAuthMode() {
-            isLoginMode = !isLoginMode;
-            document.getElementById('modal-title').innerText = isLoginMode ? "Sign In to Account" : "Create Free Account";
-            document.getElementById('auth-submit-btn').innerText = isLoginMode ? "Sign In" : "Create Account";
-            document.getElementById('name-field-group').style.display = isLoginMode ? "none" : "block";
-            document.getElementById('auth-name').required = !isLoginMode;
-            document.getElementById('auth-switch-text').innerText = isLoginMode ? "Don't have an account? Sign Up" : "Already have an account? Sign In";
-        }
-
-        // Handle Signup / Login Form Submit
-        function handleAuthSubmit(e) {
-            e.preventDefault();
-            const name = document.getElementById('auth-name').value.trim();
-            const phone = document.getElementById('auth-phone').value.trim();
-            const password = document.getElementById('auth-password').value.trim();
-
-            currentUser = phone;
-            localStorage.setItem('pe_user_phone', phone);
-            document.getElementById('user-status-badge').innerText = "👤 " + phone;
-
-            sendDataToSheet({
-                action: isLoginMode ? "login" : "signup",
-                name: name || "User",
-                phone: phone,
-                password: password,
-                time: new Date().toLocaleString()
-            });
-
-            alert(isLoginMode ? "Signed In Successfully!" : "Account Created Successfully!");
-            closeAuthModal();
-        }
-
-        // Referral System
-        function setupReferralLink() {
-            const randomCode = currentUser ? currentUser : Math.floor(100000 + Math.random() * 900000);
-            const refLink = window.location.origin + window.location.pathname + "?ref=" + randomCode;
-            document.getElementById('referral-link-input').value = refLink;
-        }
-
-        function copyReferralLink() {
-            const copyText = document.getElementById('referral-link-input');
-            copyText.select();
-            navigator.clipboard.writeText(copyText.value);
-            alert('Referral Link Copied to Clipboard!');
-        }
-
-        // Universal Google Sheet Sync Function
-        function sendDataToSheet(data) {
-            fetch(scriptURL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            }).catch(err => console.error('Sheet Sync Error:', err));
-        }
-    </script>
-</body>
-</html>
- class="fa-solid fa-crown"></i></div>
-            <div class="brand-name">PRINCE EARN</div>
-        </div>
-        <div class="user-status">
-            <button class="currency-toggle" onclick="toggleCurrency()" id="curr-btn">PKR (Rs)</button>
-            <div class="avatar" id="header-avatar" onclick="handleProfileClick()">?</div>
-        </div>
-    </div>
-
-    <!-- Main Container -->
-    <div class="container">
-        
-        <!-- Balance Dashboard -->
-        <div class="royal-card">
-            <div class="balance-label">Total Balance</div>
-            <div class="balance-amount" id="user-balance">Rs. 0.00</div>
-            
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <span class="stat-title">Completed Tasks</span>
-                    <span class="stat-val" id="tasks-count">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-title">Referral Earnings</span>
-                    <span class="stat-val" id="ref-earn">Rs. 0.00</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Task Tabs -->
-        <div class="tabs">
-            <div class="tab active" onclick="switchTab(this)">All Tasks</div>
-            <div class="tab" onclick="switchTab(this)">Short Ads (5s)</div>
-            <div class="tab" onclick="switchTab(this)">Video Watch (1m)</div>
-            <div class="tab" onclick="switchTab(this)">CPA & Apps</div>
-        </div>
-
-        <!-- Task List -->
-        <div class="task-list">
-            
-            <!-- Task 1: Short Ad -->
-            <div class="task-card">
-                <div class="task-left">
-                    <div class="task-icon"><i class="fa-solid fa-bolt"></i></div>
-                    <div class="task-details">
-                        <h4>Quick View #01</h4>
-                        <p>5 Seconds · <span class="reward-tag">+Rs. 0.50</span></p>
-                    </div>
-                </div>
-                <button class="btn-claim" onclick="completeTask(this, 0.50)">Start</button>
-            </div>
-
-            <!-- Task 2: 1 Min Video -->
-            <div class="task-card">
-                <div class="task-left">
-                    <div class="task-icon" style="color:#ef4444; background:rgba(239,68,68,0.15);"><i class="fa-brands fa-youtube"></i></div>
-                    <div class="task-details">
-                        <h4>Full Video Watch</h4>
-                        <p>60 Seconds · <span class="reward-tag">+Rs. 3.00</span></p>
-                    </div>
-                </div>
-                <button class="btn-claim" onclick="completeTask(this, 3.00)">Watch</button>
-            </div>
-
-            <!-- Task 3: CPA App Download -->
-            <div class="task-card">
-                <div class="task-left">
-                    <div class="task-icon" style="color:#10b981; background:rgba(16,185,129,0.15);"><i class="fa-solid fa-download"></i></div>
-                    <div class="task-details">
-                        <h4>Install App & Signup</h4>
-                        <p>CPA Offer · <span class="reward-tag">+Rs. 50.00</span></p>
-                    </div>
-                </div>
-                <button class="btn-claim" onclick="completeTask(this, 50.00)">Install</button>
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- Auth Modal (Login / Sign Up) -->
-    <div class="modal" id="auth-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="auth-title">Account Login</h3>
-            </div>
-            
-            <div id="login-form">
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" id="login-email" placeholder="Enter your email">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="login-pass" placeholder="Enter password">
-                </div>
-                <button class="btn-submit" onclick="loginUser()">Sign In</button>
-                <div class="auth-switch">
-                    Don't have an account? <span onclick="toggleAuth('signup')">Sign Up Free</span>
-                </div>
-            </div>
-
-            <div id="signup-form" style="display: none;">
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" id="signup-name" placeholder="Enter full name">
-                </div>
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" id="signup-email" placeholder="Enter email">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="signup-pass" placeholder="Create password">
-                </div>
-                <button class="btn-submit" onclick="registerUser()">Create Account</button>
-                <div class="auth-switch">
-                    Already have an account? <span onclick="toggleAuth('login')">Sign In</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Withdrawal Modal -->
-    <div class="modal" id="withdraw-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Withdraw Earnings</h3>
-                <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="closeModal('withdraw-modal')"></i>
-            </div>
-            <div class="form-group">
-                <label>Select Payment Method</label>
-                <select id="pay-method">
-                    <optgroup label="Pakistan Methods">
-                        <option value="EasyPaisa">EasyPaisa</option>
-                        <option value="JazzCash">JazzCash</option>
-                        <option value="NayaPay">NayaPay</option>
-                        <option value="SadaPay">SadaPay</option>
-                        <option value="Bank">Bank Transfer</option>
-                    </optgroup>
-                    <optgroup label="International Methods">
-                        <option value="Binance">Binance (USDT - Crypto)</option>
-                        <option value="Payoneer">Payoneer</option>
-                        <option value="PayPal">PayPal</option>
-                    </optgroup>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Account Number / Wallet Address</label>
-                <input type="text" placeholder="e.g. 03001234567 or USDT Address">
-            </div>
-            <div class="form-group">
-                <label>Amount</label>
-                <input type="number" placeholder="Min. Rs. 100 / $1.00">
-            </div>
-            <button class="btn-submit" onclick="submitWithdrawal()">Submit Request</button>
-        </div>
-    </div>
-
-    <!-- Profile Modal -->
-    <div class="modal" id="profile-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>User Profile</h3>
-                <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="closeModal('profile-modal')"></i>
-            </div>
-            <div style="text-align: center; margin-bottom: 16px;">
-                <div class="avatar" id="modal-avatar" style="width: 60px; height: 60px; margin: 0 auto 10px; font-size: 24px;">P</div>
-                <h4 style="color: var(--accent-gold-light);" id="profile-user-name">Prince User</h4>
-                <p style="font-size: 12px; color: var(--text-muted);" id="profile-user-email">user@princeearn.com</p>
-            </div>
-            <div class="form-group">
-                <label>Member Status</label>
-                <input type="text" value="Active (Free Member)" readonly>
-            </div>
-            <button class="btn-submit" style="background: #ef4444; color: #fff;" onclick="logoutUser()">Logout</button>
-        </div>
-    </div>
-
-    <!-- Refer Modal -->
-    <div class="modal" id="refer-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Invite & Earn 10%</h3>
-                <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="closeModal('refer-modal')"></i>
-            </div>
-            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Share your unique referral link with friends and earn 10% of their task earnings forever!</p>
-            <div class="form-group">
-                <label>Your Referral Link</label>
-                <input type="text" id="ref-link" value="https://alidon2345a-prince.github.io/Prince-earning/?ref=12345" readonly>
-            </div>
-            <button class="btn-submit" onclick="copyReferralLink()"><i class="fa-solid fa-copy"></i> Copy Link</button>
-            
-            <div class="share-btns">
-                <button class="btn-share btn-whatsapp" onclick="shareWhatsApp()"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
-                <button class="btn-share btn-facebook" onclick="shareFacebook()"><i class="fa-brands fa-facebook"></i> Facebook</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bottom Nav -->
-    <div class="bottom-nav">
-        <div class="nav-link active" onclick="reloadDashboard()">
-            <i class="fa-solid fa-house"></i>
-            <span>Home</span>
-        </div>
-        <div class="nav-link" onclick="openModal('withdraw-modal')">
-            <i class="fa-solid fa-wallet"></i>
-            <span>Withdraw</span>
-        </div>
-        <div class="nav-link" onclick="openModal('refer-modal')">
-            <i class="fa-solid fa-users"></i>
-            <span>Refer</span>
-        </div>
-    </div>
-
-    <script>
-        let totalBalance = 0.00;
-        let tasksCompleted = 0;
-        let isUSD = false;
-        let currentUser = null;
-
-        // Initialize User Session
-        window.onload = function() {
-            let savedUser = localStorage.getItem("prince_user");
-            if(savedUser) {
-                currentUser = JSON.parse(savedUser);
-                updateUserUI();
-            } else {
-                openModal("auth-modal");
-            }
-        };
-
-        function toggleAuth(mode) {
-            if(mode === 'signup') {
-                document.getElementById("auth-title").innerText = "Create Free Account";
-                document.getElementById("login-form").style.display = "none";
-                document.getElementById("signup-form").style.display = "block";
-            } else {
-                document.getElementById("auth-title").innerText = "Account Login";
-                document.getElementById("signup-form").style.display = "none";
-                document.getElementById("login-form").style.display = "block";
-            }
-        }
-
-        function registerUser() {
-            let name = document.getElementById("signup-name").value.trim();
-            let email = document.getElementById("signup-email").value.trim();
-            let pass = document.getElementById("signup-pass").value.trim();
-
-            if(!name || !email || !pass) {
-                alert("Please fill in all fields!");
-                return;
-            }
-
-            currentUser = { name: name, email: email };
-            localStorage.setItem("prince_user", JSON.stringify(currentUser));
-            updateUserUI();
-            closeModal("auth-modal");
-            alert("Account Created Successfully! Welcome to Prince Earn.");
-        }
-
-        function loginUser() {
-            let email = document.getElementById("login-email").value.trim();
-            let pass = document.getElementById("login-pass").value.trim();
-
-            if(!email || !pass) {
-                alert("Please enter both email and password!");
-                return;
-            }
-
-            let namePart = email.split('@')[0];
-            currentUser = { name: namePart.charAt(0).toUpperCase() + namePart.slice(1), email: email };
-            localStorage.setItem("prince_user", JSON.stringify(currentUser));
-            updateUserUI();
-            closeModal("auth-modal");
-            alert("Logged in successfully!");
-        }
-
-        function updateUserUI() {
-            if(currentUser) {
-                let firstChar = currentUser.name.charAt(0).toUpperCase();
-                document.getElementById("header-avatar").innerText = firstChar;
-                document.getElementById("modal-avatar").innerText = firstChar;
-                document.getElementById("profile-user-name").innerText = currentUser.name;
-                document.getElementById("profile-user-email").innerText = currentUser.email;
-            }
-        }
-
-        function handleProfileClick() {
-            if(!currentUser) {
-                openModal("auth-modal");
-            } else {
-                openModal("profile-modal");
-            }
-        }
-
-        function logoutUser() {
-            localStorage.removeItem("prince_user");
-            currentUser = null;
-            document.getElementById("header-avatar").innerText = "?";
-            closeModal("profile-modal");
-            openModal("auth-modal");
-        }
-
-        function completeTask(btn, reward) {
-            if(!currentUser) {
-                alert("Please Login / Sign Up first to complete tasks!");
-                openModal("auth-modal");
-                return;
-            }
-
-            totalBalance += reward;
-            tasksCompleted++;
-            
-            btn.innerText = "Completed";
-            btn.classList.add("done");
-            btn.disabled = true;
-
-            updateDashboard();
-        }
-
-        function updateDashboard() {
-            document.getElementById("tasks-count").innerText = tasksCompleted;
-            if(isUSD) {
-                document.getElementById("user-balance").innerText = "$" + (totalBalance / 280).toFixed(2);
-            } else {
-                document.getElementById("user-balance").innerText = "Rs. " + totalBalance.toFixed(2);
-            }
-        }
-
-        function toggleCurrency() {
-            isUSD = !isUSD;
-            document.getElementById("curr-btn").innerText = isUSD ? "USD ($)" : "PKR (Rs)";
-            updateDashboard();
-        }
-
-        function reloadDashboard() {
-            window.location.reload();
-        }
-
-        function openModal(id) {
-            document.getElementById(id).style.display = "flex";
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).style.display = "none";
-        }
-
-        function submitWithdrawal() {
-            if(!currentUser) {
-                alert("Please Login first!");
-                openModal("auth-modal");
-                return;
-            }
-            alert("Withdrawal Request Submitted Successfully! Admin will approve within 24 hours.");
-            closeModal('withdraw-modal');
-        }
-
-        function copyReferralLink() {
-            let copyText = document.getElementById("ref-link");
-            navigator.clipboard.writeText(copyText.value);
-            alert("Referral link copied to clipboard!");
-        }
-
-        function shareWhatsApp() {
-            let link = encodeURIComponent(document.getElementById("ref-link").value);
-            window.open(`https://api.whatsapp.com/send?text=Join%20Prince%20Earn%20and%20start%20earning%20today!%20${link}`);
-        }
-
-        function shareFacebook() {
-            let link = encodeURIComponent(document.getElementById("ref-link").value);
-            window.open(`https://www.facebook.com/sharer/sharer.php?u=${link}`);
-        }
-
-        function switchTab(el) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            el.classList.add('active');
-        }
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbyQuCQ_DgDKqz_Og64yuzeeUu5awmS-D_CCIkEOtN3Q9pgxBc3kcgj2zBDO3S4XZdvTbg/exec';
-const registerForm = document.querySelector('form'); 
-if (registerForm) {
-  registerForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const formData = new FormData(registerForm);
-    const data = Object.fromEntries(formData.entries());
-
-    fetch(scriptURL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
-    .then(() => {
-      alert('Registration Successful!');
-      registerForm.reset();
-    })
-    .catch(error => console.error('Error!', error.message));
-  });
-}
-    </script>
-</body>
-</html>
+            document.querySelectorAll('.tab-btn').forEach(el => el.clas
